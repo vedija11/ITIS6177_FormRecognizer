@@ -28,11 +28,11 @@ var analyzeReceipt = function(req, res){
             res.status(400).send({
                 "errors": err.response.data.errors
             });
-        } else if (err.response.status == 401) {
-            res.status(401).send(err.response.data);
+        } else if (err.response.status == 415) {
+            res.status(415).send(err.response.data);
         } else if (err.response.status == 500) {
             res.status(500).send({
-                "message": "Unexpected server error"
+                "message": "Internal server error"
             });
         } else {
             res.status(400).send({
@@ -55,8 +55,12 @@ var receiptResults = function(req, res){
         res.send(response.data);
     }).catch(err => {
         console.log(err);
-        if (err.response.status == 401) {
-            res.status(401).send(err.response.data);
+        if (err.response.status == 404) {
+            res.status(404).send(err.response.data);
+        } else if (err.response.status == 500) {
+            res.status(500).send({
+                "message": "Internal server error"
+            });
         } else {
             res.status(400).send({
                 "message": "Error occured"
@@ -92,7 +96,7 @@ router.post('/analyzeReceipt', analyzeReceipt);
 router.get('/receiptResults', receiptResults);
 
 //...........................JWT.............................
-/*
+
 router.post('/signIn',function(req,res){
 
     username = req.body.username;
@@ -103,8 +107,6 @@ router.post('/signIn',function(req,res){
     };
     var token = jwt.sign(payLoad,'myKey',{expiresIn:  "1h"})
     return res.json({token: token});
-    //res.header('auth-token', token).send({"token": token});
-
 } else {
     res.status(400).send({
         "message" : "Invalid credentials!"
@@ -113,7 +115,7 @@ router.post('/signIn',function(req,res){
 });
 
 //using the verifytoken middleware to generate the accesstoken
-router.post('/user/analyzeReceipt', verifyToken, analyzeReceipt); */
+router.post('/user/analyzeReceipt', verifyToken, analyzeReceipt); 
 
 module.exports = router;
 
