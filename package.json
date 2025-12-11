@@ -15,6 +15,6 @@
     "express": "^4.22.1",
     "jsonwebtoken": "^8.5.1",
     "swagger-jsdoc": "^6.2.8",
-    "swagger-ui-express": "^4.1.4"
+    "swagger-ui-express": "^4.6.3"
   }
 }
